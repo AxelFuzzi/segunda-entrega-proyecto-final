@@ -1,0 +1,15 @@
+{
+	"data": [
+		{
+			"id": 1,
+			"timestamps": 1675093409831,
+			"nombre": "teclado rgb",
+			"descripcion": "rteclado ruido",
+			"codigo": 123,
+			"foto": "gif",
+			"precio": 99,
+			"stock": 1
+		}
+	],
+	"currentId": 1
+}
