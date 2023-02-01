@@ -4,7 +4,7 @@ const app = express()
 const postModel = require('./mongo/schemas/producto.js')
 const productoControllers = require('./mongo/controller/producto.js')
 const carritoControllers = require('./mongo/controller/carrito.js')
-const { carritovController } = require('./mongo/controller/carrito.js')
+const CheckAdmin = require('../middlewares/checkAdmin.js')
 
 
 app.use(express.json())
@@ -19,18 +19,13 @@ let DB = "mongoDB";
 switch (DB) {
     case "fileSystem":
         console.log("persistencia fileSystem elegida");
-        //app.use('/productos',require('../routes/productsFilesystem.js'))
-        //app.use('/carrito',require('../routes/cartFilesystem.js'))
+        app.use('/productos',require('../routes/productsFilesystem.js'))
+        app.use('/carrito',require('../routes/cartFilesystem.js'))
         break;
     case "mongoDB":
         console.log("persistencia mongoDB elegida");
-
-        /*----------------------------------------
-        ----------rutas de productos--------------
-        ----------------------------------------*/
-
-        //app.use('/productos',require('../routes/routesMongo'))
-        //app.use('/carrito',require('../routes/routesMongo'))
+        app.use('/productos',require('../routes/productsMongo.js'))
+        app.use('/carrito',require('../routes/cartMongo.js'))
 
         /*app.post("/productos/crear", async(req,res)=>{
             const {nombre,descripcion,codigo,foto,precio,stock} = req.body;
@@ -43,7 +38,7 @@ switch (DB) {
             }
         });*/
 
-        app.post("/productos/crear", productoControllers.productoController)
+        //app.post("/productos/crear", CheckAdmin, productoControllers.productoController)
 
         /*app.get("/productos/listar", async(req, res)=>{
 
@@ -55,7 +50,7 @@ switch (DB) {
             }
         });*/
 
-        app.get("/productos/listar", productoControllers.productovController)
+        //app.get("/productos/listar", productoControllers.productovController)
 
         /*app.get("/productos/:id", async(req, res)=>{
             const {id} = req.params
@@ -67,7 +62,7 @@ switch (DB) {
             }
         })*/
 
-        app.get("/productos/listar/:id", productoControllers.productovController)
+        //app.get("/productos/listar/:id", productoControllers.productovController)
 
         /*app.put("/productos/:id", async(req, res)=>{
             const {id} = req.params
@@ -80,7 +75,7 @@ switch (DB) {
             }
         })*/
 
-        app.put("/productos/actualizar/:id", productoControllers.productoActualizarid)
+        //app.put("/productos/actualizar/:id", CheckAdmin, productoControllers.productoActualizarid)
 
         /*app.delete("/productos/:id", async(req,res)=>{
             const{id}=re.params
@@ -93,19 +88,7 @@ switch (DB) {
             }
         })*/
 
-        app.delete("/productos/borrar/:id", productoControllers.productobController)
-
-        /*----------------------------------------
-        ------------rutas de carrito--------------
-        ----------------------------------------*/
-        
-        app.post("/carrito/agregar/:id", carritoControllers.carritoController)
-
-        app.get("/carrito/listar", carritoControllers.carritovController)
-
-        app.get("/carrito/listar/:id", carritoControllers.carritovController)
-
-        app.delete("/carrito/borrar/:id", carritoControllers.carritobController)
+        //app.delete("/productos/borrar/:id", CheckAdmin, productoControllers.productobController)
 
         break;
 
@@ -128,17 +111,8 @@ app.use((req, res, next) => {
 
 const PORT = process.env.PORT || 8080
 
-/*const conexion = async() => {
-        await mongoose.connect('mongodb+srv://coderUser:123@cluster0.ldzjuyz.mongodb.net/ecommerce?retryWrites=true&w=majority',{
-            useNewUrlParser:true,
-            useUnifiedTopology:true
-        }); 
-   }
-
-conexion();*/
-
 const conexion = () => {
-    mongoose.set('strictQuery',true).connect('mongodb+srv://coderUser:123@cluster0.ldzjuyz.mongodb.net/ecommerce?retryWrites=true&w=majority',
+    mongoose.set('strictQuery',true).connect('mongodb+srv://coderUser:123@cluster0.ldzjuyz.mongodb.net/DBcoderEcommerce?retryWrites=true&w=majority',
     {
         useNewUrlParser:true,
         useUnifiedTopology:true

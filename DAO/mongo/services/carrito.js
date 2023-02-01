@@ -1,4 +1,4 @@
-const ProductoDAO=require('../contenedorProducto.js')
+const ProductoDAO=require('../contenedorCarrito.js')
 
 class productoService{
 	constructor(){}
